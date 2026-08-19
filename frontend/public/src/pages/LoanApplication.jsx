@@ -1,3 +1,5 @@
+<h2>Digital Loan Application</h2>
+<p>Please enter your details to apply for a loan.</p>
 import React from 'react';
 import LoanForm from '../components/LoanForm';
 
