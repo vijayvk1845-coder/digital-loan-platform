@@ -2,7 +2,7 @@ import React from 'react';
 import LoanForm from '../components/LoanForm';
 
 export default function LoanApplication() {
-  const applicantId = 1; // would come from logged-in user in a real app
+  const applicantId = 1;
 
   return (
     <div>
