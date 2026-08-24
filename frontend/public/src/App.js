@@ -13,9 +13,9 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/apply" element={<LoanApplication />} />
         <Route path="/credit-assessment" element={<CreditAssessment />} />
+        <Route path="/loan-status" element={<LoanStatus />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
 export default App;
