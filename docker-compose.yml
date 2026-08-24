@@ -1,41 +1,46 @@
 services:
-  frontend:
-    build: ./frontend
+
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: loan_origination_db
+      POSTGRES_USER: loan_admin
+      POSTGRES_PASSWORD: change_me
     ports:
-      - "8080:80"
-    depends_on:
-      - backend
+      - "15433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
     networks:
       - loan-net
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
-      - "8000:5000"
+      - "18000:5000"
     environment:
-      - DB_HOST=database
-      - DB_PORT=5432
-      - DB_USER=loan_admin
-      - DB_PASSWORD=change_me
-      - DB_NAME=loan_origination_db
-      - JWT_SECRET=replace_with_a_strong_secret
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: loan_origination_db
+      DB_USER: loan_admin
+      DB_PASSWORD: change_me
+      JWT_SECRET: replace_with_a_strong_secret
     depends_on:
       - database
     networks:
       - loan-net
 
-  database:
-    image: postgres:16-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=loan_admin
-      - POSTGRES_PASSWORD=change_me
-      - POSTGRES_DB=loan_origination_db
-    volumes:
-      - db-data:/var/lib/postgresql/data
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "5433:5432"
+      - "18080:80"
+    depends_on:
+      - backend
     networks:
       - loan-net
 
